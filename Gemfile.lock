@@ -1,0 +1,18 @@
+PATH
+  remote: .
+  specs:
+    struct_utils (0.0.1)
+      classy_struct (~> 0.3, >= 0.3.2)
+
+GEM
+  remote: https://rubygems.org/
+  specs:
+    classy_struct (0.3.2)
+    minitest (5.4.3)
+
+PLATFORMS
+  ruby
+
+DEPENDENCIES
+  minitest (~> 5.4, >= 5.4.3)
+  struct_utils!
