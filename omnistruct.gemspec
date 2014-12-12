@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = "omnistruct"
-  s.version     = "1.0.0"
+  s.version     = "1.0.1"
 
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]
@@ -15,6 +15,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "classy_struct", "~> 0.3", ">= 0.3.2"
   s.add_development_dependency "minitest", "~> 5.4", ">= 5.4.3"
 
-  s.files        = Dir.glob("*.rb") + %w(README.md)
+  s.files        = Dir.glob("ext/*.rb") + Dir.glob("*.rb") + %w(README.md)
   s.require_path = "."
 end

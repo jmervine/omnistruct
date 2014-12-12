@@ -1,5 +1,7 @@
 language: ruby
-script: PATH="./spec:$PATH" bundle exec rspec -c -fd
+install:
+  - bundle install --path .bundle
+script: bundle exec ruby ./test/test_omnistruct.rb
 rvm:
   - 1.9.2
   - 1.9.3
