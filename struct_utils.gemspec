@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.email       = "joshua@mervine.net"
   s.files       = ["struct_utils.rb"]
   s.homepage    =
-    "https://github.com/jmervine/struct-utils.rb"
+    "https://github.com/jmervine/struct_utils"
   s.license       = "MIT"
 
   s.add_runtime_dependency "classy_struct", "~> 0.3", ">= 0.3.2"
