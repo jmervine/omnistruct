@@ -1,4 +1,4 @@
-OmniStruct
+OmniStruct - [![Build Status](https://travis-ci.org/jmervine/omnistruct.svg?branch=master)](https://travis-ci.org/jmervine/omnistruct)
 ==========
 
 Helpers for using OpenStruct and/or Struct over Hash
