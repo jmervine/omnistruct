@@ -1,7 +1,7 @@
-struct-utils.rb
-===============
+OmniStruct
+==========
 
-Some Utils for using OpenStruct and/or Struct over Hash
+Helpers for using OpenStruct and/or Struct over Hash
 
 ### Usage
 
@@ -9,14 +9,14 @@ Require after or in place of `classy_struct`, `ostruct` and/or `struct`.
 
 ```ruby
 # good
-require 'struct_utils`
+require 'omnistruct`
 
 # also good
 require 'ostruct`
-require 'struct_utils`
+require 'omnistruct`
 
 # bad
-require 'struct_utils`
+require 'omnistruct`
 require 'ostruct`
 ```
 
