@@ -1,7 +1,7 @@
 # -*- encoding: utf-8 -*-
 Gem::Specification.new do |s|
   s.name        = "omnistruct"
-  s.version     = "1.0.1"
+  s.version     = "1.1.0"
 
   s.platform    = Gem::Platform::RUBY
   s.authors     = ["Joshua Mervine"]

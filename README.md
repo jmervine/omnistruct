@@ -45,6 +45,7 @@ Add's the following common `Hash` methods to struct types;
 struct = <struct type>.to_struct( [type] )
 merged = <struct type>.merge( Hash.new | <struct type> )
 json   = <struct type>.to_json
+value  = <struct type>.delete(:key)
 
 # ClassyStruct
 locked = <classy struct>.lock

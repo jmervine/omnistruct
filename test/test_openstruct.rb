@@ -1,11 +1,9 @@
-require 'minitest/autorun'
 require './test/setup'
-require './omnistruct'
 
 class TestOmniStruct < Minitest::Test
   # OpenStruct
   def test_openstruct_merge!
-    Hash.struct_type = :open_struct
+    Hash.struct_type = OpenStruct::STRUCT_TYPE
 
     os1 = @h1.to_struct
     os2 = @h2.to_struct
@@ -18,7 +16,7 @@ class TestOmniStruct < Minitest::Test
   end
 
   def test_openstruct_merge
-    Hash.struct_type = :open_struct
+    Hash.struct_type = OpenStruct::STRUCT_TYPE
 
     os1 = @h1.to_struct
     os2 = @h2.to_struct
@@ -34,7 +32,7 @@ class TestOmniStruct < Minitest::Test
   end
 
   def test_openstruct_lock
-    os1 = @h1.to_struct(:open_struct)
+    os1 = @h1.to_struct(OpenStruct::STRUCT_TYPE)
 
     locked = os1.lock
     assert locked.is_a?(Struct)
@@ -42,24 +40,32 @@ class TestOmniStruct < Minitest::Test
   end
 
   def test_openstruct_unlock
-    os1 = @h1.to_struct(:open_struct)
+    os1 = @h1.to_struct(OpenStruct::STRUCT_TYPE)
 
     assert_equal os1.unlock, os1, "noop"
   end
 
+  def test_openstruct_delete
+    os1 = @h1.to_struct(OpenStruct::STRUCT_TYPE)
+    assert_nil os1.delete(:bad_key)
+    assert_equal "a", os1.delete(:a)
+    assert_nil os1.a
+  end
+
   def test_openstruct_to_json
     assert_equal '{"foo":"bar"}',
-      { :foo => "bar" }.to_struct(:open_struct).to_json
+      { :foo => "bar" }.to_struct(OpenStruct::STRUCT_TYPE).to_json
   end
 
   def test_openstruct_to_struct
-    os = @h1.to_struct(:open_struct)
+    os = @h1.to_struct(OpenStruct::STRUCT_TYPE)
 
     assert_equal os, os.to_struct
     assert os.to_struct.is_a?(OpenStruct)
 
     assert os.to_struct.is_a?(OpenStruct)
-    assert os.to_struct(:struct).is_a?(Struct)
-    assert os.to_struct(:classy_struct).is_a?(ClassyHashStruct)
+
+    ns = os.to_struct(ClassyStruct::STRUCT_TYPE)
+    assert ns.is_a?(ClassyHashStruct), ns.class
   end
 end

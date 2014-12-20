@@ -1,30 +1,8 @@
-require File.join(File.dirname(__FILE__), 'hash')
+require File.join(File.dirname(__FILE__), 'common')
 require 'ostruct'
-require 'json'
 
 class OpenStruct
-  # replaces object
-  def merge! other
-    self.marshal_load(merge(other).to_h)
-  end
-
-  # returns new object
-  def merge other
-    OpenStruct.new(self.marshal_dump.merge(other.to_h))
-  end
-
-  def to_json
-    self.marshal_dump.to_json
-  end
-
-  # Convert OpenStruct to Struct, thus locking it.
-  def lock
-    self.marshal_dump.to_struct(:struct)
-  end
-
-  def unlock
-    self # noop
-  end
+  STRUCT_TYPE = :open_struct
 
   # Convert OpenStruct to Struct or ClassyStruct
   #
@@ -44,8 +22,31 @@ class OpenStruct
   #   s = struct.to_struct(:classy_struct)
   #   s.class
   #   #=> ClassyHashStruct
-  def to_struct(type=:open_struct)
-    return self if type.to_sym == :open_struct
-    return self.marshal_dump.to_struct(type)
+  include CommonStruct
+
+  def struct_type
+    STRUCT_TYPE
   end
+
+  # replaces object
+  def merge! other
+    self.marshal_load(merge(other).to_h)
+  end
+
+  # returns new object
+  def merge other
+    OpenStruct.new(self.to_h.merge(other.to_h))
+  end
+
+  # Convert OpenStruct to Struct, thus locking it.
+  def lock
+    self.to_h.to_struct(Struct::STRUCT_TYPE)
+  end
+
+  def unlock
+    self # noop
+  end
+
+  alias :to_h :marshal_dump
+  alias :to_hash :to_h
 end

@@ -1,14 +1,14 @@
-require 'json'
+require File.join(File.dirname(__FILE__), 'classystruct')
+require File.join(File.dirname(__FILE__), 'openstruct')
+require File.join(File.dirname(__FILE__), 'struct')
 
 # Supports converting Hashes in to different kinds of structs via a 'to_struct'
 # method.
 #
 # Note: ClassyStruct perferred over OpenStruct, it's faster.
 class Hash
-  CLASSY_STRUCT_NAME = "ClassyHashStruct"
-
   attr_accessor :struct_type
-  @@struct_type = :classy_struct
+  @@struct_type = ClassyStruct::STRUCT_TYPE
 
   # Convert Hash to Struct, OpenStruct or ClassyStruct
   #
@@ -33,19 +33,19 @@ class Hash
   def to_struct(type=nil)
     self.struct_type = type.nil? ? struct_type : type.to_sym
 
-    if struct_type == :classy_struct
+    if struct_type == ClassyStruct::STRUCT_TYPE
       begin
-        Object.send(:remove_const, CLASSY_STRUCT_NAME.to_sym)
+        Object.send(:remove_const, ClassyStruct::CLASS_NAME)
       rescue; end
 
-      return Object.const_set(CLASSY_STRUCT_NAME, ClassyStruct.new).new(self)
+      return Object.const_set(ClassyStruct::CLASS_NAME, ClassyStruct.new).new(self)
     end
 
     self.each do |k,v|
       self[k] = v.to_struct(struct_type) if v.is_a? Hash
     end
 
-    if struct_type == :open_struct
+    if struct_type == OpenStruct::STRUCT_TYPE
       # openstruct is said to be slower, so giving the option to disable
       return OpenStruct.new(self)
     end
@@ -100,6 +100,10 @@ class Hash
 
   protected
   def self.struct_types
-    [ :classy_struct, :open_struct, :struct ]
+    [
+      ClassyStruct::STRUCT_TYPE,
+      OpenStruct::STRUCT_TYPE,
+      Struct::STRUCT_TYPE
+    ]
   end
 end

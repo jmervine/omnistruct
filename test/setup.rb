@@ -1,3 +1,6 @@
+require 'minitest/autorun'
+require './omnistruct'
+
 class TestOmniStruct < Minitest::Test
   def setup
     @h1 = {
@@ -11,6 +14,6 @@ class TestOmniStruct < Minitest::Test
     }
 
     # always reset default
-    Hash.class_variable_set(:@@struct_type, :classy_struct)
+    Hash.class_variable_set(:@@struct_type, ClassyStruct::STRUCT_TYPE)
   end
 end
