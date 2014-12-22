@@ -1,28 +1,11 @@
 require File.join(File.dirname(__FILE__), 'hash')
-require 'json'
+require File.join(File.dirname(__FILE__), 'common')
 
 class Struct
-  # returns new object
-  def merge other
-    selfHash = self.to_h
-    otherHash = other.is_a?(Hash) ? other : other.to_h
+  STRUCT_TYPE = :struct
 
-    selfHash.merge!(otherHash)
-    selfHash.to_struct(:struct)
-  end
-
-  def lock
-    self #noop
-  end
-
-  # Convert Struct to OpenStruct or ClassyStruct (default), thus unlocking it.
-  def unlock(type=:classy_struct)
-    return nil if type.to_sym == :struct
-    return self.to_h.to_struct(type)
-  end
-
-  def to_json
-    self.to_h.to_json
+  def struct_type
+    STRUCT_TYPE
   end
 
   # Convert Struct # to OpenStruct or ClassyStruct
@@ -43,10 +26,24 @@ class Struct
   #   s = struct.to_struct(:classy_struct)
   #   s.class
   #   #=> ClassyHashStruct
-  def to_struct(type=:classy_struct)
-    return self if type.to_sym == :struct
+  include CommonStruct
+
+  # returns new object
+  def merge other
+    selfHash = self.to_h
+    otherHash = other.is_a?(Hash) ? other : other.to_h
+
+    selfHash.merge!(otherHash)
+    selfHash.to_struct(STRUCT_TYPE)
+  end
+
+  def lock
+    self #noop
+  end
+
+  # Convert Struct to OpenStruct or ClassyStruct (default), thus unlocking it.
+  def unlock(type=ClassyStruct::STRUCT_TYPE)
+    return nil if type.to_sym == Struct::STRUCT_TYPE
     return self.to_h.to_struct(type)
   end
 end
-
-

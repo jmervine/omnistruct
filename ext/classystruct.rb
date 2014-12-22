@@ -1,12 +1,13 @@
-require File.join(File.dirname(__FILE__), 'hash')
+require File.join(File.dirname(__FILE__), 'common')
 require 'classy_struct'
-require 'json'
 
 # ClassyStruct patches
 ####
 class ClassyStruct
+  STRUCT_TYPE = :classy_struct
+  CLASS_NAME  = "ClassyHashStruct"
+
   class ClassyStructClass
-    alias :to_h :to_hash
 
     # Convert ClassyStruct to Struct or OpenStruct
     #
@@ -26,22 +27,21 @@ class ClassyStruct
     #   s = struct.to_struct(:open_struct)
     #   s.class
     #   #=> OpenStruct
-    def to_struct(type=:classy_struct)
-      return self if type.to_sym == :classy_struct
-      return self.to_h.to_struct(type)
+    include CommonStruct
+
+    def struct_type
+      STRUCT_TYPE
     end
 
     def merge other
-      self.to_h.merge!(other.to_h).to_struct(:classy_struct)
+      self.to_h.merge!(other.to_h).to_struct(STRUCT_TYPE)
     end
 
     # Convert ClassyStruct to Struct, thus locking it.
     def lock
-      self.to_h.to_struct(:struct)
+      self.to_h.to_struct(Struct::STRUCT_TYPE)
     end
 
-    def to_json
-      self.to_h.to_json
-    end
+    alias :to_h :to_hash
   end
 end
